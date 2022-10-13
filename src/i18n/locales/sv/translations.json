@@ -1,0 +1,6 @@
+{
+  "email": "Emailadress",
+  "password": "Lösenord",
+  "login": "Logga in",
+  "login-error-message": "Kunde inte logga in användaren"
+}
