@@ -4,7 +4,9 @@ import Loader from "@/components/Loader";
 import Section from "@/components/Section/Section";
 import TextField from "@/components/TextField";
 import { validateEmail } from "@/helpers/validateEmail";
-import { loginUserAsync } from "@/services/authenticate";
+import { useAppDispatch } from "@/store/hooks";
+import { loginUserThunk } from "@/store/user/thunks";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styles from "./loginform.module.scss";
@@ -17,6 +19,8 @@ const LoginForm: React.FC = () => {
   const [validForm, setValidForm] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [showError, setShowError] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const loginUser = async () => {
     setLoading(true);
@@ -24,7 +28,8 @@ const LoginForm: React.FC = () => {
       setShowError(false);
     }
     try {
-      await loginUserAsync({ email, password });
+      await dispatch(loginUserThunk({ email, password }));
+      router.push("/admin");
     } catch (error) {
       setValidForm(false);
       setShowError(true);

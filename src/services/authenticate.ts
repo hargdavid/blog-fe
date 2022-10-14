@@ -1,5 +1,3 @@
-import { addTokenToLocalStorage } from "@/helpers/localStorage";
-import IJwtResponse from "@/models/api/IJwtResponse";
 import ILoginForm from "@/models/api/ILoginForm";
 import axios from "axios";
 
@@ -11,6 +9,5 @@ export const loginUserAsync = async (body: ILoginForm) => {
     headers: { ApiKey: apiKey },
   });
 
-  addTokenToLocalStorage(res.data as unknown as IJwtResponse);
-  return;
+  return res;
 };
