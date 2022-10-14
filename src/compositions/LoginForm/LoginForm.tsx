@@ -1,6 +1,7 @@
 import Alert from "@/components/Alert";
 import Button from "@/components/Button";
 import Loader from "@/components/Loader";
+import Section from "@/components/Section/Section";
 import TextField from "@/components/TextField";
 import { validateEmail } from "@/helpers/validateEmail";
 import { loginUserAsync } from "@/services/authenticate";
@@ -55,34 +56,39 @@ const LoginForm: React.FC = () => {
   }, [validForm]);
 
   return (
-    <form className={styles["login-form"]}>
-      <TextField
-        value={email}
-        type="email"
-        required
-        label={t("email")}
-        error={!validEmail}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <TextField
-        value={password}
-        type="password"
-        required
-        label={t("password")}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <Button
-        variant="contained"
-        disabled={!validForm || loading}
-        onClick={loginUser}
-      >
-        {t("login")}
-      </Button>
+    <Section>
+      <h1>{t("login")}</h1>
+      <form className={styles["login-form"]}>
+        <TextField
+          value={email}
+          type="email"
+          required
+          label={t("email")}
+          error={!validEmail && email.length > 0}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <TextField
+          value={password}
+          type="password"
+          required
+          label={t("password")}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <Button
+          variant="contained"
+          disabled={!validForm || loading}
+          onClick={loginUser}
+        >
+          {t("login")}
+        </Button>
 
-      {showError && <Alert severity="error">{t("login-error-message")}</Alert>}
+        {showError && (
+          <Alert severity="error">{t("login-error-message")}</Alert>
+        )}
 
-      {loading && <Loader />}
-    </form>
+        {loading && <Loader />}
+      </form>
+    </Section>
   );
 };
 

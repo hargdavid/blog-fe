@@ -2,5 +2,8 @@
   "email": "Email",
   "password": "Password",
   "login": "Login",
-  "login-error-message": "Couldn't login the user"
+  "login-error-message": "Couldn't login the user",
+  "general": {
+    "title": "Titel för sidan"
+  }
 }

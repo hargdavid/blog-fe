@@ -15,6 +15,6 @@
   },
   "Create styling file": {
     "prefix": ["styling"],
-    "body": ["@import '@/colors.scss'", "", ".root {}", ""]
+    "body": ["@import '/src/styles/general.scss';", "", ".root {}", ""]
   }
 }

@@ -1,5 +1,13 @@
 import IJwtResponse from "@/models/api/IJwtResponse";
 
-export const addTokenToLocalStorage = (jwtBody: IJwtResponse) => {};
-export const removeTokenFromLocalStorage = () => {};
-export const getTokenFromLocalStorage = () => {};
+const storageKey = `userToken_${process.env.NEXT_PUBLIC_ENV}`;
+
+export const addTokenToLocalStorage = (jwtBody: IJwtResponse) => {
+  localStorage.setItem(storageKey, JSON.stringify(jwtBody));
+};
+export const removeTokenFromLocalStorage = () => {
+  localStorage.removeItem(storageKey);
+};
+export const getTokenFromLocalStorage = () => {
+  return localStorage.getItem(storageKey);
+};

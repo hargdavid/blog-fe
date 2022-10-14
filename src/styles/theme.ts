@@ -14,6 +14,6 @@ export const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: ["Roboto", "Arial"].join(","),
+    fontFamily: "Roboto",
   },
 });

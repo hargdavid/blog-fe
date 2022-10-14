@@ -1,3 +1,9 @@
+@import '/src/styles/general.scss';
+
 .login-form{
-  
+  display: flex;
+  flex-flow: column;
+  gap: $medium;
+  max-width: 450px;
+  margin: 0 auto;
 }

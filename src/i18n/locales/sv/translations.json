@@ -1,6 +1,9 @@
 {
-  "email": "Emailadress",
+  "email": "E-postadress",
   "password": "Lösenord",
   "login": "Logga in",
-  "login-error-message": "Kunde inte logga in användaren"
+  "login-error-message": "Kunde inte logga in användaren",
+  "general": {
+    "title": "Titel för sidan"
+  }
 }
