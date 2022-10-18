@@ -8,18 +8,16 @@ export const addTokenToLocalStorage = (jwtBody: IJwtResponse) => {
 export const removeTokenFromLocalStorage = () => {
   localStorage.removeItem(storageKey);
 };
-export const getTokenFromLocalStorage = (): {
-  jwt: string;
-  refreshToken: string;
-} | null => {
-  const tokenStr = localStorage.getItem(storageKey);
+export const getTokenFromLocalStorage = (): IJwtResponse | null => {
+  if (typeof window !== "undefined") {
+    const tokenStr = localStorage.getItem(storageKey);
 
-  if (tokenStr) {
-    const {
-      data: { jwt, refreshToken },
-    } = JSON.parse(tokenStr);
-    return { jwt, refreshToken };
+    if (tokenStr) {
+      const {
+        data: { jwt, refreshToken },
+      } = JSON.parse(tokenStr);
+      return { jwt, refreshToken };
+    }
   }
-
   return null;
 };
