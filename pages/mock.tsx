@@ -5021,6 +5021,8 @@ const Mock: NextPage = () => {
       clients.map((client) => ({
         ...client,
         selected: false,
+        name: client.fullName,
+        id: client.clientId,
       }))
     );
   };
@@ -5031,19 +5033,24 @@ const Mock: NextPage = () => {
 
   const isSelectedClient = (client) => {
     return selectedClients.some(
-      (selectedClient) => client.clientId === selectedClient.clientId
+      (selectedClient) => client.id === selectedClient.id
     );
   };
 
   const removeFromList = (client) => {
     setSelectedClients(
       selectedClients.filter(
-        (selectedClient) => selectedClient.clientId !== client.clientId
+        (selectedClient) => selectedClient.id !== client.id
       )
     );
   };
 
   const toggleElement = (client) => {
+    if (!client) {
+      setSelectedClients([]);
+      return;
+    }
+
     const isSelected = isSelectedClient(client);
     const newClient = { ...client, selected: isSelected ? false : true };
 
@@ -5054,7 +5061,7 @@ const Mock: NextPage = () => {
     }
 
     const newFormattedValues = formattedClients.map((formattedClient) => {
-      if (client.clientId === formattedClient.clientId) {
+      if (client.id === formattedClient.id) {
         return newClient;
       }
       return formattedClient;
@@ -5069,14 +5076,21 @@ const Mock: NextPage = () => {
   };
 
   return (
-    <Autocomplete
-      clients={formattedClients}
-      selectedClients={selectedClients}
-      setSelectedClients={setSelectedClients}
-      onDelete={removeFromList}
-      clearList={clearList}
-      toggleElement={toggleElement}
-    />
+    <>
+      <div style={{ display: "flex", gap: "8px" }}>
+        <Autocomplete
+          list={formattedClients}
+          selectedClients={selectedClients}
+          onDelete={removeFromList}
+          clearList={clearList}
+          onClickElement={toggleElement}
+          multiple
+          selectedList={selectedClients}
+        />
+
+        <Autocomplete list={formattedClients} onClickElement={toggleElement} />
+      </div>
+    </>
   );
 };
 
