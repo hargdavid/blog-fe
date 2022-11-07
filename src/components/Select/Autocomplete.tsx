@@ -7,10 +7,9 @@ import SelectedList from "./SelectedList";
 const Autocomplete = (props) => {
   const {
     list,
+    setList,
     selectedList,
-    onDelete,
-    clearList,
-    onClickElement,
+    setSelectedList,
     paging = 20,
     multiple = false,
     listName = "List",
@@ -26,18 +25,62 @@ const Autocomplete = (props) => {
   const [availableItems, setAvailableItems] = useState(list.length);
   const [selectedElement, setSelectedElement] = useState(null);
 
-  useEffect(() => {
-    if (inputValue.length > 0) {
-      const filteredList = list.filter((listElement) =>
-        listElement.name.toLowerCase().includes(inputValue.toLowerCase())
-      );
-      setAvailableItems(filteredList.length);
-      setVisibleList(filteredList.slice(0, currentPaging));
-    } else {
-      setAvailableItems(list.length);
-      setVisibleList(list.slice(0, currentPaging));
+  const isSelectedElement = (element) => {
+    return selectedList.some(
+      (selectedElement) => element.id === selectedElement.id
+    );
+  };
+
+  const removeFromList = (element) => {
+    setSelectedList(
+      selectedList.filter(
+        (selectedElement) => selectedElement.id !== element.id
+      )
+    );
+    setList(
+      visibleList.map((listEl) => {
+        if (listEl.id === element.id) {
+          return { ...element, selected: false };
+        }
+        return listEl;
+      })
+    );
+  };
+
+  const onClickElement = (element) => {
+    if (!element) {
+      setSelectedList([]);
+      return;
     }
-  }, [inputValue, currentPaging, list]);
+
+    const isSelected = isSelectedElement(element);
+    const newElement = { ...element, selected: isSelected ? false : true };
+
+    if (isSelected) {
+      removeFromList(newElement);
+    } else {
+      setSelectedList([...selectedList, newElement]);
+    }
+
+    const newFormattedValues = list.map((formattedElement) => {
+      if (element.id === formattedElement.id) {
+        return newElement;
+      }
+      return formattedElement;
+    });
+
+    setList(newFormattedValues);
+  };
+
+  const clearList = () => {
+    setSelectedList([]);
+    setList(
+      list.map((el) => ({
+        ...el,
+        selected: false,
+      }))
+    );
+  };
 
   const paginate = () => {
     if (listRef.current) {
@@ -73,6 +116,19 @@ const Autocomplete = (props) => {
       }
     }
   };
+
+  useEffect(() => {
+    if (inputValue.length > 0) {
+      const filteredList = list.filter((listElement) =>
+        listElement.name.toLowerCase().includes(inputValue.toLowerCase())
+      );
+      setAvailableItems(filteredList.length);
+      setVisibleList(filteredList.slice(0, currentPaging));
+    } else {
+      setAvailableItems(list.length);
+      setVisibleList(list.slice(0, currentPaging));
+    }
+  }, [inputValue, currentPaging, list]);
 
   useEffect(() => {
     if (availableItems > paging) {
@@ -163,7 +219,7 @@ const Autocomplete = (props) => {
       {multiple && selectedList.length > 0 && (
         <SelectedList
           selectedList={selectedList}
-          onClick={onDelete}
+          onClick={removeFromList}
           clearList={clearList}
         />
       )}

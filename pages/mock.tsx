@@ -5031,64 +5031,24 @@ const Mock: NextPage = () => {
     initialFormatClients();
   }, []);
 
-  const isSelectedClient = (client) => {
-    return selectedClients.some(
-      (selectedClient) => client.id === selectedClient.id
-    );
-  };
-
-  const removeFromList = (client) => {
-    setSelectedClients(
-      selectedClients.filter(
-        (selectedClient) => selectedClient.id !== client.id
-      )
-    );
-  };
-
-  const toggleElement = (client) => {
-    if (!client) {
-      setSelectedClients([]);
-      return;
-    }
-
-    const isSelected = isSelectedClient(client);
-    const newClient = { ...client, selected: isSelected ? false : true };
-
-    if (isSelected) {
-      removeFromList(newClient);
-    } else {
-      setSelectedClients([...selectedClients, newClient]);
-    }
-
-    const newFormattedValues = formattedClients.map((formattedClient) => {
-      if (client.id === formattedClient.id) {
-        return newClient;
-      }
-      return formattedClient;
-    });
-
-    setFormattedClients(newFormattedValues);
-  };
-
-  const clearList = () => {
-    setSelectedClients([]);
-    initialFormatClients();
-  };
-
   return (
     <>
       <div style={{ display: "flex", gap: "8px" }}>
         <Autocomplete
           list={formattedClients}
-          selectedClients={selectedClients}
-          onDelete={removeFromList}
-          clearList={clearList}
-          onClickElement={toggleElement}
-          multiple
+          setList={setFormattedClients}
           selectedList={selectedClients}
+          setSelectedList={setSelectedClients}
+          multiple
+          listName="Clients"
         />
 
-        <Autocomplete list={formattedClients} onClickElement={toggleElement} />
+        {/* <Autocomplete
+          list={formattedClients}
+          setList={setFormattedClients}
+          selectedList={selectedClients}
+          setSelectedList={setSelectedClients}
+        /> */}
       </div>
     </>
   );

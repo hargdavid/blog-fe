@@ -16,5 +16,27 @@
   "Create styling file": {
     "prefix": ["styling"],
     "body": ["@import '/src/styles/general.scss';", "", ".root {}", ""]
+  },
+  "Create story component": {
+    "prefix": ["newStory"],
+    "body": [
+      "import React from 'react';",
+      "import { ComponentStory, ComponentMeta } from '@storybook/react';",
+      "",
+      "import {COMPONENTNAME} from './{COMPONENTNAME}';",
+      "",
+      "export default {",
+      "title: '{COMPONENTNAME}',",
+      "component: {COMPONENTNAME},",
+      "argTypes: {},",
+      "} as ComponentMeta<typeof {COMPONENTNAME}>;",
+      "",
+      "const Template: ComponentStory<typeof {COMPONENTNAME}> = (args) => <{COMPONENTNAME} {...args} />;",
+      "",
+      "//setting up variations of the component",
+      "export const Primary = Template.bind({});",
+      "Primary.args = {",
+      "};"
+    ]
   }
 }
